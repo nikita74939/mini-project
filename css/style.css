@@ -1,0 +1,129 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, black 60%, rgba(128, 0, 128, 0.8) 100%);
+    box-shadow: 0 -20px 50px rgba(128, 0, 128, 0.5);
+    overflow: hidden;
+}
+
+.page {
+    height: 100vh;
+    margin: 0;
+    padding: 0 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Stardos Stencil", serif;
+    color: white;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 56px;
+}
+
+.blinking-text {
+    font-size: 48px;
+    text-align: center;
+    transition: opacity 0.5s ease, text-shadow 0.5s ease; /* Tambahkan transisi untuk text-shadow */
+    display: inline-block; /* Pastikan elemen dapat diposisikan secara inline */
+    opacity: 0.4; /* Set opacity awal menjadi 0.4 */
+}
+
+.no-shadow {
+    text-shadow: none; /* Kelas untuk menghilangkan shadow */
+}
+
+.with-shadow {
+    text-shadow: 0 0 10px #ffffff, 0 0 20px rgba(255, 255, 255, 0.6); /* Kelas untuk menambahkan shadow putih */
+}
+
+p {
+    text-align: center;
+    font-size: 16px;
+    font-family: "Poiret One", serif;
+    letter-spacing: 2px;
+    margin-bottom: 64px;
+}
+
+button {
+    position: relative;
+    color: white;
+    font-size: 16px;
+    font-family: "Poiret One", serif;
+    letter-spacing: 2px;
+    background: white;
+    padding: 10px 30px;
+    border: none;
+}
+
+button:hover {
+    background: rgb(255, 255, 255);
+    color: white;
+    letter-spacing: 4px;
+    box-shadow: 0 0 35px rgb(255, 255, 255);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: black;
+}
+
+button span {
+    position: relative;
+    z-index: 1;
+    font-weight: bolder;
+}
+
+.star-1 {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.star-2 {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 1;
+    animation: twinkle 1.5s infinite alternate;
+    -webkit-animation: twinkle 1.5s infinite alternate;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.star-fall {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 1;
+    left: 100px;
+}
+
+.tail {
+    position: absolute;
+    background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0));
+    height: 60px;
+    /*Panjangbuntut*/width: 2px;
+    /*Lebarbuntut*/top: 100%;
+    left: 50%;
+    transform: translate(-50%,-100%) rotate(-225deg);
+    pointer-events: none;
+    -webkit-transform: translate(-50%,-100%) rotate(-225deg);
+    -moz-transform: translate(-50%,-100%) rotate(-225deg);
+    -ms-transform: translate(-50%,-100%) rotate(-225deg);
+    -o-transform: translate(-50%,-100%) rotate(-225deg);
+}
