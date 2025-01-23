@@ -72,9 +72,9 @@ function createFallingStar() {
 
 // Membuat bintang terus-menerus
 function generateStars() {
-    setInterval(() => {
+    fallingStarInterval = setInterval(() => {
         createFallingStar();
-    }, 100); // Buat bintang baru setiap 200ms
+    }, 100); // Buat bintang baru setiap 100ms
 }
 
 // Jalankan animasi bintang jatuh
@@ -102,3 +102,15 @@ function blink() {
 // Mulai efek berkedip
 setInterval(blink, 500); // Ulangi setiap 500ms
 
+document.getElementById('btn-start').addEventListener('click', function(){
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('create').style.display = 'flex';
+
+    clearInterval(fallingStarInterval);
+});
+
+document.getElementById('btn-create').addEventListener('click', function(){
+    document.getElementById('create').style.display = 'none';
+    document.getElementById('result').style.display = 'flex';
+
+});
