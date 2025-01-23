@@ -107,6 +107,7 @@ document.getElementById('btn-start').addEventListener('click', function(){
     document.getElementById('create').style.display = 'flex';
 
     clearInterval(fallingStarInterval);
+    makeStars();
 });
 
 document.getElementById('btn-create').addEventListener('click', function(){
@@ -114,3 +115,85 @@ document.getElementById('btn-create').addEventListener('click', function(){
     document.getElementById('result').style.display = 'flex';
 
 });
+
+let connectedPoints = [];
+let canvas; // Declare canvas globally
+
+function makeStars() {
+    const container = document.getElementById('grid-container');
+    const starSize = 10; // Ukuran bintang
+    const offset = 40; // Offset untuk menggeser bintang
+
+    for (let i = 1; i <= 49; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.id = 'star' + i;
+        star.dataset.index = i; // Store index for connection
+
+        // Mengatur posisi bintang dalam grid
+        const col = (i - 1) % 7; // Kolom
+        const row = Math.floor((i - 1) / 7); // Baris
+
+        // Menghitung posisi bintang dengan offset acak
+        const randomX = Math.random() * offset - offset / 2; // Offset horizontal
+        const randomY = Math.random() * offset - offset / 2; // Offset vertikal
+
+        // Mengatur posisi bintang dengan jarak antar bintang
+        star.style.left = `${col * (starSize + 80) + randomX}px`; // Mengatur posisi horizontal
+        star.style.top = `${row * (starSize + 35) + randomY}px`; // Mengatur posisi vertikal
+
+        star.addEventListener('click', connectStars);
+        container.appendChild(star);
+    }
+
+    // Create canvas after stars are created
+    canvas = document.createElement('canvas');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+    container.appendChild(canvas);
+}
+
+function connectStars(event) {
+    const star = event.target;
+    const index = star.dataset.index;
+
+    if (connectedPoints.includes(index)) {
+        // If already connected, remove connection
+        connectedPoints = connectedPoints.filter(point => point !== index);
+        star.style.background = '#ffffff'; // Reset star color
+        drawLines(); // Redraw lines after removing
+    } else {
+        // If not connected, add to connected points
+        connectedPoints.push(index);
+        star.style.background = '#ffcc00'; // Change color to indicate connection
+        drawLines();
+    }
+
+    console.log('Connected Points:', connectedPoints);
+}
+
+function drawLines() {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous lines
+
+    for (let i = 0; i < connectedPoints.length - 1; i++) {
+        const startIndex = connectedPoints[i];
+        const endIndex = connectedPoints[i + 1];
+
+        const startStar = document.getElementById('star' + startIndex);
+        const endStar = document.getElementById('star' + endIndex);
+
+        const startX = startStar.offsetLeft + startStar.offsetWidth / 2;
+        const startY = startStar.offsetTop + startStar.offsetHeight / 2;
+        const endX = endStar.offsetLeft + endStar.offsetWidth / 2;
+        const endY = endStar.offsetTop + endStar.offsetHeight / 2;
+
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = '#ffcc00'; // Color of the line
+        ctx.lineWidth = 2; // Width of the line
+        ctx.stroke();
+        ctx.closePath();
+    }
+}

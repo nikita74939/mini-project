@@ -131,10 +131,6 @@ button span {
 }
 
 /* create page */
-.create {
-    
-}
-
 .create h1 {
     font-family: "Poiret One", serif;
     font-size: 30px;
@@ -145,4 +141,26 @@ button span {
     font-family: "Poiret One", serif;
     font-size: 16px;
     letter-spacing: 2px;
+}
+
+.grid-container {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    width: 560px;
+    height: 300px;
+    /*Adjustheightasneeded*/position: absolute;
+    row-gap: 100px;
+    position: relative;
+}
+
+.star {
+    width: 6px; /* Adjust size of stars */
+    height: 6px; /* Adjust size of stars */
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
 }
