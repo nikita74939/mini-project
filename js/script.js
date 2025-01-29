@@ -118,6 +118,8 @@ document.getElementById('btn-create').addEventListener('click', function(){
 
 let connectedPoints = [];
 let canvas; // Declare canvas globally
+let draggingStar = null; // To keep track of the star being dragged
+
 
 function makeStars() {
     const container = document.getElementById('grid-container');
@@ -142,34 +144,48 @@ function makeStars() {
         star.style.left = `${col * (starSize + 80) + randomX}px`; // Mengatur posisi horizontal
         star.style.top = `${row * (starSize + 35) + randomY}px`; // Mengatur posisi vertikal
 
-        star.addEventListener('click', connectStars);
+        // Add event listeners for drag and drop
+        star.addEventListener('mousedown', startDrag);
+        star.addEventListener('mouseup', endDrag);
+        star.addEventListener('mousemove', drag);
         container.appendChild(star);
     }
 
     // Create canvas after stars are created
     canvas = document.createElement('canvas');
+    canvas.id = 'canvas';
     canvas.width = container.offsetWidth;
     canvas.height = container.offsetHeight;
     container.appendChild(canvas);
 }
 
-function connectStars(event) {
-    const star = event.target;
-    const index = star.dataset.index;
+function startDrag(event) {
+    draggingStar = event.target; // Set the star being dragged
+    draggingStar.style.background = '#ffcc00'; // Change color to indicate it's being dragged
+}
 
-    if (connectedPoints.includes(index)) {
-        // If already connected, remove connection
-        connectedPoints = connectedPoints.filter(point => point !== index);
-        star.style.background = '#ffffff'; // Reset star color
-        drawLines(); // Redraw lines after removing
-    } else {
-        // If not connected, add to connected points
-        connectedPoints.push(index);
-        star.style.background = '#ffcc00'; // Change color to indicate connection
-        drawLines();
+function endDrag(event) {
+    if (draggingStar) {
+        const dropStar = event.target; // The star where it is dropped
+        const dropIndex = dropStar.dataset.index;
+
+        if (dropStar !== draggingStar) {
+            // Connect the stars if they are different
+            connectedPoints.push(draggingStar.dataset.index);
+            connectedPoints.push(dropIndex);
+            drawLines();
+        }
+
+        draggingStar.style.background = '#ffffff'; // Reset color
+        draggingStar = null; // Reset dragging star
     }
+}
 
-    console.log('Connected Points:', connectedPoints);
+function drag(event) {
+    if (draggingStar) {
+        // Optionally, you can implement visual feedback while dragging
+        // For example, you can change the position of the star being dragged
+    }
 }
 
 function drawLines() {
@@ -191,9 +207,18 @@ function drawLines() {
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
-        ctx.strokeStyle = '#ffcc00'; // Color of the line
-        ctx.lineWidth = 2; // Width of the line
+        ctx.strokeStyle = '#ffcc00'; 
+        ctx.lineWidth = 2; 
         ctx.stroke();
         ctx.closePath();
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btn-clear').addEventListener('click', function(){
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        connectedPoints = [];
+    });
+});

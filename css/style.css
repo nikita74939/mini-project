@@ -164,3 +164,9 @@ button span {
     position: absolute;
     cursor: pointer;
 }
+
+.button-flex {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
